@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TheBoringMediaMCP</title>
+<link rel="icon" href="favicon.png">
+<style>
+:root{
+  --bg:#070b16; --bg2:#0b1224; --card:#0f1830; --card2:#131e3b; --line:#1d2a4d; --line2:#27396a;
+  --txt:#e6ecff; --mut:#8a98c0; --dim:#5f6d94;
+  --cyan:#22b8f0; --blue:#4b7bff; --violet:#7b6cff; --ok:#2dd4a0; --warn:#fbbf24; --bad:#ff6b7a;
+  --grad:linear-gradient(135deg,#0bb8d6 0%,#3b82f6 55%,#6d6cf5 100%);
+}
+:root[data-theme=light]{
+  --bg:#f3f6fd; --bg2:#e9eefa; --card:#ffffff; --card2:#f6f8fe; --line:#d9e1f5; --line2:#bcc9ec;
+  --txt:#10183a; --mut:#4c5a85; --dim:#7d8aaf;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:radial-gradient(1200px 600px at 70% -10%,rgba(75,123,255,.16),transparent 60%),var(--bg);
+  color:var(--txt);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+a{color:var(--cyan)}
+header{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);
+  background:rgba(7,11,22,.6);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10}
+:root[data-theme=light] header{background:rgba(243,246,253,.8)}
+header img{width:44px;height:44px;border-radius:11px}
+header h1{font-size:18px;margin:0;letter-spacing:.2px}
+header .sub{color:var(--mut);font-size:12px}
+.sp{flex:1}
+.badge{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--line2);color:var(--mut)}
+button,.btn{font:inherit;cursor:pointer;border-radius:9px;border:1px solid var(--line2);background:var(--card2);
+  color:var(--txt);padding:7px 13px}
+button:hover{border-color:var(--cyan)}
+button.primary{background:var(--grad);border:0;color:#fff;font-weight:600}
+button.primary:hover{filter:brightness(1.1)}
+button.ghost{background:transparent}
+button.sm{padding:3px 9px;font-size:12px}
+button:disabled{opacity:.5;cursor:default}
+nav{display:flex;gap:4px;padding:10px 20px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;color:var(--mut);padding:9px 14px}
+nav button.on{color:var(--txt);border-bottom-color:var(--cyan)}
+main{max-width:1180px;margin:0 auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h3{margin:0;font-size:16px;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--dim);flex:none}
+.dot.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)} .dot.bad{background:var(--bad)} .dot.off{background:var(--dim)}
+.dot.wait{background:var(--warn)}
+.mut{color:var(--mut)} .small{font-size:12px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-radius:12px;
+  background:var(--card);border:1px solid var(--line);margin-bottom:16px}
+.bar.warn{border-color:var(--warn)}
+.pill{padding:2px 9px;border-radius:99px;font-size:12px;background:var(--card2);border:1px solid var(--line2)}
+.pill.ok{color:var(--ok);border-color:var(--ok)} .pill.bad{color:var(--bad);border-color:var(--bad)}
+.k-read{color:var(--ok)} .k-write{color:var(--warn)} .k-destructive{color:var(--bad)}
+label.f{display:block;margin:10px 0 0;font-size:12px;color:var(--mut)}
+input[type=text],input[type=password],input[type=url],select,textarea{width:100%;background:var(--bg2);color:var(--txt);
+  border:1px solid var(--line2);border-radius:9px;padding:8px 10px;font:inherit;margin-top:4px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--blue);outline-offset:0}
+.sw{position:relative;display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:13px}
+.sw input{appearance:none;width:36px;height:20px;border-radius:99px;background:var(--line2);position:relative;cursor:pointer;margin:0;transition:.15s}
+.sw input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.sw input:checked{background:var(--blue)} .sw input:checked::after{left:18px}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12.5px;margin:6px 0 0;white-space:pre-wrap;word-break:break-all}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mut);font-weight:500}
+.tok{font-family:ui-monospace,monospace;font-size:12.5px}
+.savebar{position:sticky;bottom:0;padding:12px 0;background:linear-gradient(transparent,var(--bg) 40%);display:flex;gap:10px;align-items:center;margin-top:12px}
+.toast{position:fixed;right:18px;bottom:18px;background:var(--card2);border:1px solid var(--line2);padding:10px 16px;border-radius:10px;z-index:50}
+.login{max-width:420px;margin:12vh auto;text-align:center}
+.login img{width:96px;border-radius:22px}
+.hint{border-left:3px solid var(--blue);padding:6px 12px;background:var(--card);border-radius:0 8px 8px 0;margin:10px 0;color:var(--mut);font-size:13px}
+details{margin-top:12px} summary{cursor:pointer;color:var(--cyan)}
+.snip{margin-top:16px}
+.snip h4{margin:0;font-size:14px;display:flex;align-items:center;gap:10px}
+@media(max-width:600px){main{padding:12px}header{padding:10px 12px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+// ---------- tiny helpers ----------
+const $ = (s, r = document) => r.querySelector(s);
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v === null || v === undefined || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "value") el.value = v;
+    else if (k === "checked") el.checked = !!v;
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat()) {
+    if (kid === null || kid === undefined || kid === false) continue;
+    el.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+}
+const TOKEN_KEY = "tbmm_token";
+const getTok = () => { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; } };
+const setTok = t => { try { localStorage.setItem(TOKEN_KEY, t); } catch {} };
+
+// ---------- i18n ----------
+const I = {
+  de: {
+    dashboard: "Übersicht", settings: "Dienste", connect: "Verbinden", tools: "Tools", log: "Protokoll",
+    login_title: "Anmeldung", login_text: "Gib das MCP-Token ein (steht beim ersten Start im Add-on-/Container-Log oder in TBMM_TOKEN).",
+    login_btn: "Anmelden", bad_token: "Token ungültig",
+    active_services: "aktive Dienste", visible_tools: "sichtbare Tools",
+    limit_warn: "Mehr als {n} Tools: Manche KI-Clients laden nur die ersten {n}. Nutze die getrennten Endpunkte unter „Verbinden“ (z. B. nur *arr oder nur Downloads).",
+    off: "aus", checking: "prüfe …", connected: "verbunden", error: "Fehler", test: "Testen", enabled: "Aktiv",
+    readonly: "Nur lesen", verify_ssl: "TLS-Zertifikat prüfen", save: "Speichern", saved: "Gespeichert",
+    secret_set: "gesetzt – leer lassen = unverändert", clear: "löschen", tools_n: "Tools",
+    ro_hint: "„Nur lesen“ blendet alle schreibenden Tools aus und blockiert Änderungen.",
+    base_url: "Öffentliche Basis-URL", base_url_help: "Adresse, unter der dieser Server von deiner KI erreichbar ist, z. B. https://theboringmediamcp.example.de (ohne /mcp). Leer = aktuelle Adresse.",
+    endpoint: "Endpunkt", token: "Token", show: "anzeigen", hide: "verbergen", copy: "Kopieren", copied: "Kopiert",
+    regen: "Neues Token erzeugen", regen_confirm: "Neues Token erzeugen? Alle verbundenen KI-Clients müssen danach das neue Token verwenden.",
+    url_with_token: "URL mit Token (funktioniert überall)", url_plain: "URL (Token als Bearer-Header)",
+    hint_secret: "Tipp: Clients, die nur eine URL erlauben (claude.ai, ChatGPT), nutzen die URL mit Token. Behandle sie wie ein Passwort und veröffentliche sie nirgends.",
+    hint_ingress: "Du öffnest die Oberfläche über Home Assistant. Trage oben die öffentliche Basis-URL ein, damit die Beispiele stimmen.",
+    search: "Suchen …", kind: "Art", desc: "Beschreibung", read: "lesen", write: "schreiben", destructive: "löschen/kritisch",
+    time: "Zeit", tool: "Tool", status: "Status", ms: "ms", refresh: "Aktualisieren", empty_log: "Noch keine Aufrufe.",
+    disabled_svc: "Dienst deaktiviert", general: "Allgemein", language: "Sprache", theme: "Design",
+    docker_hint: "Hinweis: Docker-Socket nur bei vertrauenswürdigem Netz freigeben.",
+  },
+  en: {
+    dashboard: "Overview", settings: "Services", connect: "Connect", tools: "Tools", log: "Log",
+    login_title: "Sign in", login_text: "Enter the MCP token (printed in the add-on/container log on first start, or set via TBMM_TOKEN).",
+    login_btn: "Sign in", bad_token: "Invalid token",
+    active_services: "active services", visible_tools: "visible tools",
+    limit_warn: "More than {n} tools: some AI clients only load the first {n}. Use the split endpoints under “Connect” (e.g. *arr only or downloads only).",
+    off: "off", checking: "checking …", connected: "connected", error: "error", test: "Test", enabled: "Enabled",
+    readonly: "Read-only", verify_ssl: "Verify TLS certificate", save: "Save", saved: "Saved",
+    secret_set: "set – leave empty to keep", clear: "clear", tools_n: "tools",
+    ro_hint: "Read-only hides every tool that changes data and blocks writes.",
+    base_url: "Public base URL", base_url_help: "Address under which your AI reaches this server, e.g. https://theboringmediamcp.example.com (without /mcp). Empty = current address.",
+    endpoint: "Endpoint", token: "Token", show: "show", hide: "hide", copy: "Copy", copied: "Copied",
+    regen: "Generate new token", regen_confirm: "Generate a new token? All connected AI clients must switch to the new one.",
+    url_with_token: "URL with token (works everywhere)", url_plain: "URL (token as bearer header)",
+    hint_secret: "Tip: clients that only accept a URL (claude.ai, ChatGPT) use the URL with token. Treat it like a password and never publish it.",
+    hint_ingress: "You are using the UI through Home Assistant. Set the public base URL above so the examples are correct.",
+    search: "Search …", kind: "Kind", desc: "Description", read: "read", write: "write", destructive: "delete/critical",
+    time: "Time", tool: "Tool", status: "Status", ms: "ms", refresh: "Refresh", empty_log: "No calls yet.",
+    disabled_svc: "service disabled", general: "General", language: "Language", theme: "Theme",
+    docker_hint: "Note: only expose the Docker socket on a trusted network.",
+  }
+};
+let lang = (navigator.language || "de").startsWith("en") ? "en" : "de";
+const t = k => (I[lang][k] ?? k);
+
+// ---------- state ----------
+let S = null;            // server state
+let tab = "dashboard";
+let health = {};         // service id -> {state, text}
+let dirty = {};          // service id -> {field: value}
+let general = {};        // pending general changes
+let logTimer = null;
+
+async function api(path, opts = {}) {
+  const r = await fetch("api/ui/" + path, {
+    ...opts,
+    headers: { "Content-Type": "application/json", ...(getTok() ? { Authorization: "Bearer " + getTok() } : {}) },
+  });
+  if (r.status === 401) throw Object.assign(new Error("auth"), { auth: true });
+  return r.json();
+}
+function toast(msg) {
+  const el = h("div", { class: "toast" }, msg); document.body.append(el); setTimeout(() => el.remove(), 2200);
+}
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = h("textarea"); ta.value = text; document.body.append(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  toast(t("copied"));
+}
+
+// ---------- boot ----------
+async function load() {
+  try {
+    S = await api("state");
+    if (!general.language) lang = S.language || lang;
+    const th = (() => { try { return localStorage.getItem("tbmm_theme"); } catch { return null; } })();
+    document.documentElement.dataset.theme = th || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    render();
+    for (const s of S.services) if (s.enabled && !health[s.id]) test(s.id, false);
+  } catch (e) {
+    if (e.auth) renderLogin(); else $("#app").replaceChildren(h("pre", {}, String(e)));
+  }
+}
+function renderLogin(err) {
+  const inp = h("input", { type: "password", placeholder: "Token", autofocus: true });
+  const go = async () => { setTok(inp.value.trim()); try { await api("state"); load(); } catch { renderLogin(true); } };
+  inp.addEventListener("keydown", e => e.key === "Enter" && go());
+  $("#app").replaceChildren(h("div", { class: "login" },
+    h("img", { src: "logo.png", alt: "" }), h("h2", {}, "TheBoringMediaMCP"),
+    h("p", { class: "mut" }, t("login_text")), inp,
+    err ? h("p", { style: "color:var(--bad)" }, t("bad_token")) : null,
+    h("p", {}, h("button", { class: "primary", onclick: go }, t("login_btn")))));
+}
+
+async function test(id, notify = true) {
+  health[id] = { state: "wait", text: t("checking") };
+  if (tab === "dashboard") renderBody();
+  const body = { fields: {}, verify_ssl: undefined };
+  const d = dirty[id] || {};
+  for (const k of Object.keys(d)) if (k !== "enabled" && k !== "read_only" && k !== "verify_ssl") body.fields[k] = d[k];
+  if ("verify_ssl" in d) body.verify_ssl = d.verify_ssl;
+  try {
+    const r = await api("test/" + id, { method: "POST", body: JSON.stringify(body) });
+    health[id] = r.ok
+      ? { state: "ok", text: [r.version ? "v" + r.version : null, r.detail, r.ms + " ms"].filter(Boolean).join(" · ") }
+      : { state: "bad", text: r.error || "?" };
+    if (notify) toast((r.ok ? "✓ " : "✗ ") + (S.services.find(s => s.id === id).title) + ": " + (r.ok ? r.detail || t("connected") : r.error));
+  } catch (e) { health[id] = { state: "bad", text: String(e.message) }; }
+  if (tab === "dashboard") renderBody();
+}
+
+async function save() {
+  const services = {};
+  for (const [id, d] of Object.entries(dirty)) services[id] = d;
+  await api("config", { method: "POST", body: JSON.stringify({ general, services }) });
+  dirty = {}; general = {}; health = {};
+  toast(t("saved"));
+  await load();
+}
+
+// ---------- layout ----------
+function render() {
+  const app = $("#app");
+  const tabs = ["dashboard", "settings", "connect", "tools", "log"];
+  const nav = h("nav", {}, tabs.map(k => h("button", { class: tab === k ? "on" : "", onclick: () => { tab = k; render(); } }, t(k))));
+  const themeBtn = h("button", { class: "ghost sm", title: t("theme"), onclick: () => {
+    const cur = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+    document.documentElement.dataset.theme = cur; try { localStorage.setItem("tbmm_theme", cur); } catch {} } }, "◐");
+  const langBtn = h("button", { class: "ghost sm", onclick: async () => {
+    lang = lang === "de" ? "en" : "de"; general.language = lang; document.documentElement.lang = lang;
+    try { await api("config", { method: "POST", body: JSON.stringify({ general: { language: lang } }) }); } catch {}
+    render(); } }, lang.toUpperCase());
+  app.replaceChildren(
+    h("header", {},
+      h("img", { src: "logo.png", alt: "" }),
+      h("div", {}, h("h1", {}, "TheBoringMediaMCP"), h("div", { class: "sub" }, "Jellyfin · Radarr · Sonarr · Prowlarr · Seerr · SABnzbd · Gluetun · Homarr")),
+      h("span", { class: "badge" }, "v" + S.version), h("div", { class: "sp" }), themeBtn, langBtn),
+    nav, h("main", { id: "body" }));
+  renderBody();
+}
+function renderBody() {
+  const body = $("#body"); if (!body) return;
+  clearInterval(logTimer);
+  const views = { dashboard: vDashboard, settings: vSettings, connect: vConnect, tools: vTools, log: vLog };
+  body.replaceChildren(views[tab]());
+}
+
+// ---------- views ----------
+function statusOf(s) {
+  if (!s.enabled) return { state: "off", text: t("off") };
+  return health[s.id] || { state: "wait", text: t("checking") };
+}
+function totals() {
+  const all = S.scopes.find(x => x.id === "all");
+  return { n: S.services.filter(s => s.enabled).length, tools: all ? all.tools : 0 };
+}
+function vDashboard() {
+  const tt = totals();
+  const warn = tt.tools > S.tool_limit;
+  return h("div", {},
+    h("div", { class: "bar" + (warn ? " warn" : "") },
+      h("span", { class: "pill ok" }, `${tt.n} ${t("active_services")}`),
+      h("span", { class: "pill" + (warn ? " bad" : "") }, `${tt.tools} ${t("visible_tools")}`),
+      warn ? h("span", { class: "small mut" }, t("limit_warn").replaceAll("{n}", S.tool_limit)) : null),
+    h("div", { class: "grid" }, S.services.map(s => {
+      const st = statusOf(s);
+      const en = h("input", { type: "checkbox", checked: s.enabled, onchange: async e => {
+        await api("config", { method: "POST", body: JSON.stringify({ services: { [s.id]: { enabled: e.target.checked } } }) });
+        delete health[s.id]; await load(); } });
+      return h("div", { class: "card", style: `border-top:3px solid ${s.color}` },
+        h("h3", {}, h("span", { class: "dot " + st.state }), s.title, h("span", { class: "sp" }),
+          h("label", { class: "sw" }, en)),
+        h("div", { class: "mut small", style: "margin:4px 0 8px" }, s.desc),
+        h("div", { class: "small", style: "min-height:2.6em;word-break:break-word;color:" + (st.state === "bad" ? "var(--bad)" : "var(--mut)") }, st.text),
+        h("div", { class: "row", style: "margin-top:10px" },
+          h("span", { class: "pill" }, `${s.tool_count} ${t("tools_n")}`),
+          s.read_only ? h("span", { class: "pill" }, t("readonly")) : null,
+          h("div", { class: "sp" }),
+          h("button", { class: "sm", onclick: () => test(s.id), disabled: !s.enabled && !s.fields.some(f => f.has_value) }, t("test"))));
+    })));
+}
+
+function setDirty(id, k, v) { (dirty[id] = dirty[id] || {})[k] = v; }
+function vSettings() {
+  const wrap = h("div", {});
+  wrap.append(h("div", { class: "card", style: "margin-bottom:14px" },
+    h("h3", {}, t("general")),
+    h("label", { class: "f" }, t("base_url"),
+      h("input", { type: "url", value: general.public_url ?? S.public_url, placeholder: "https://theboringmediamcp.example.de",
+        oninput: e => { general.public_url = e.target.value; } })),
+    h("div", { class: "small mut", style: "margin-top:4px" }, t("base_url_help"))));
+  const grid = h("div", { class: "grid" });
+  for (const s of S.services) {
+    const d = () => dirty[s.id] || {};
+    const card = h("div", { class: "card", style: `border-top:3px solid ${s.color}` },
+      h("h3", {}, h("span", { class: "dot " + statusOf(s).state }), s.title),
+      h("div", { class: "mut small" }, s.desc));
+    for (const f of s.fields) {
+      const inp = h("input", { type: f.secret ? "password" : "text", autocomplete: "off", spellcheck: "false",
+        value: f.secret ? "" : (d()[f.key] ?? f.value),
+        placeholder: f.secret ? (f.has_value ? "•••••••• (" + t("secret_set") + ")" : f.help || "") : f.placeholder,
+        oninput: e => setDirty(s.id, f.key, e.target.value) });
+      card.append(h("label", { class: "f" }, f.label, inp,
+        f.secret && f.has_value ? h("button", { class: "sm ghost", type: "button", style: "margin-top:4px",
+          onclick: () => { setDirty(s.id, f.key, ""); inp.placeholder = "—"; toast(t("clear")); } }, t("clear")) : null,
+        !f.secret && f.help ? h("span", { class: "small mut" }, f.help) : null,
+        f.secret && f.help && !f.has_value ? null : null));
+    }
+    const sw = (key, label, on) => h("label", { class: "sw" }, h("input", { type: "checkbox", checked: d()[key] ?? on,
+      onchange: e => setDirty(s.id, key, e.target.checked) }), label);
+    card.append(h("div", { class: "row", style: "margin-top:12px" },
+      sw("enabled", t("enabled"), s.enabled), sw("read_only", t("readonly"), s.read_only),
+      s.id !== "jellyfin_collection" ? sw("verify_ssl", t("verify_ssl"), s.verify_ssl) : null));
+    if (s.id === "jellyfin_collection") card.append(h("div", { class: "hint" }, t("docker_hint")));
+    card.append(h("div", { class: "row", style: "margin-top:12px" }, h("button", { class: "sm", onclick: () => test(s.id) }, t("test"))));
+    grid.append(card);
+  }
+  wrap.append(h("div", { class: "hint" }, t("ro_hint")), grid,
+    h("div", { class: "savebar" }, h("button", { class: "primary", onclick: save }, t("save"))));
+  return wrap;
+}
+
+function base() {
+  const u = (general.public_url ?? S.public_url ?? "").trim().replace(/\/+$/, "");
+  return u || location.origin;
+}
+let scopeSel = "all", showTok = false;
+function vConnect() {
+  const sc = S.scopes.find(x => x.id === scopeSel) || S.scopes[0];
+  const url = base() + sc.path, urlTok = base() + "/s/" + S.token + sc.path;
+  const T = S.token;
+  const mask = x => showTok ? x : x.replaceAll(T, "••••••••");
+  const snip = (title, text, note) => h("div", { class: "snip" },
+    h("h4", {}, title, h("button", { class: "sm", onclick: () => copy(text) }, t("copy"))),
+    note ? h("div", { class: "small mut" }, note) : null, h("pre", {}, mask(text)));
+  const js = o => JSON.stringify(o, null, 2);
+  const tokRow = h("div", { class: "row" },
+    h("span", { class: "tok" }, showTok ? T : "•".repeat(24)),
+    h("button", { class: "sm", onclick: () => { showTok = !showTok; renderBody(); } }, showTok ? t("hide") : t("show")),
+    h("button", { class: "sm", onclick: () => copy(T) }, t("copy")),
+    h("button", { class: "sm", onclick: async () => { if (!confirm(t("regen_confirm"))) return;
+      const r = await api("token", { method: "POST" }); S.token = r.token; showTok = true; renderBody(); } }, t("regen")));
+  const sel = h("select", { onchange: e => { scopeSel = e.target.value; renderBody(); } },
+    S.scopes.map(x => h("option", { value: x.id, selected: x.id === scopeSel }, `${x.path}  –  ${x.title}  (${x.tools} ${t("tools_n")})`)));
+  return h("div", {},
+    h("div", { class: "card" },
+      h("label", { class: "f", style: "margin-top:0" }, t("endpoint"), sel),
+      h("label", { class: "f" }, t("token")), tokRow,
+      S.ingress ? h("div", { class: "hint" }, t("hint_ingress")) : null,
+      h("div", { class: "hint" }, t("hint_secret"))),
+    h("div", { class: "card", style: "margin-top:14px" },
+      snip("Claude (claude.ai / Claude Desktop → Connectors → " + (lang === "de" ? "Benutzerdefinierten Connector hinzufügen" : "Add custom connector") + ")", urlTok, t("url_with_token")),
+      snip("ChatGPT (Settings → Connectors → Developer mode → " + (lang === "de" ? "MCP-Server hinzufügen, Authentifizierung: keine" : "add MCP server, authentication: none") + ")", urlTok, t("url_with_token")),
+      snip("Claude Code", `claude mcp add --transport http theboringmediamcp ${url} --header "Authorization: Bearer ${T}"`, t("url_plain")),
+      snip("Gemini CLI (~/.gemini/settings.json)", js({ mcpServers: { theboringmediamcp: { httpUrl: url, headers: { Authorization: "Bearer " + T } } } })),
+      snip("Claude Desktop (claude_desktop_config.json, " + (lang === "de" ? "lokale Brücke über mcp-remote" : "local bridge via mcp-remote") + ")",
+        js({ mcpServers: { theboringmediamcp: { command: "npx", args: ["-y", "mcp-remote", url, "--header", "Authorization:${AUTH_HEADER}"], env: { AUTH_HEADER: "Bearer " + T } } } })),
+      snip("Cursor / Windsurf / LM Studio / Open WebUI", js({ mcpServers: { theboringmediamcp: { url, headers: { Authorization: "Bearer " + T } } } })),
+      snip("VS Code (.vscode/mcp.json)", js({ servers: { theboringmediamcp: { type: "http", url, headers: { Authorization: "Bearer " + T } } } })),
+      snip("curl (Test)", `curl -s ${url} -H "Authorization: Bearer ${T}" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'`),
+      snip(lang === "de" ? "Älterer SSE-Transport (nur falls ein Client Streamable HTTP nicht kann)" : "Legacy SSE transport (only if a client cannot do Streamable HTTP)", base() + "/s/" + S.token + "/sse")));
+}
+
+function vTools() {
+  const q = h("input", { type: "text", placeholder: t("search"), oninput: e => draw(e.target.value.toLowerCase()) });
+  const out = h("div", {});
+  const draw = f => {
+    out.replaceChildren(...S.services.map(s => {
+      const rows = s.tools.filter(x => !f || x.name.includes(f) || x.description.toLowerCase().includes(f));
+      if (!rows.length) return null;
+      return h("div", { class: "card", style: `margin-top:12px;border-top:3px solid ${s.color};` + (s.enabled ? "" : "opacity:.55") },
+        h("h3", {}, s.title, h("span", { class: "pill" }, `${rows.length}`), !s.enabled ? h("span", { class: "small mut" }, t("disabled_svc")) : null),
+        h("table", {}, h("tbody", {}, rows.map(x => h("tr", {},
+          h("td", { style: "white-space:nowrap" }, h("code", {}, x.name)),
+          h("td", { class: "k-" + x.kind, style: "white-space:nowrap" }, x.mixed ? t("write") + " / " + t("read") : t(x.kind)),
+          h("td", { class: "mut" }, x.description))))));
+    }));
+  };
+  draw("");
+  return h("div", {}, q, out);
+}
+
+function vLog() {
+  const box = h("div", { class: "card" });
+  const draw = async () => {
+    const r = await api("log");
+    box.replaceChildren(h("div", { class: "row", style: "margin-bottom:8px" }, h("button", { class: "sm", onclick: draw }, t("refresh"))),
+      r.items.length ? h("table", {}, h("thead", {}, h("tr", {}, [t("time"), t("tool"), t("status"), t("ms")].map(x => h("th", {}, x)))),
+        h("tbody", {}, r.items.map(i => h("tr", {}, h("td", { class: "mut" }, i.ts), h("td", {}, h("code", {}, i.tool), i.note ? h("div", { class: "small", style: "color:var(--bad)" }, i.note) : null),
+          h("td", {}, h("span", { class: "pill " + (i.ok ? "ok" : "bad") }, i.ok ? "ok" : t("error"))), h("td", { class: "mut" }, i.ms)))))
+        : h("p", { class: "mut" }, t("empty_log")));
+  };
+  draw(); logTimer = setInterval(() => { if (tab === "log") draw(); }, 5000);
+  return box;
+}
+
+document.documentElement.lang = lang;
+load();
+</script>
+</body>
+</html>
