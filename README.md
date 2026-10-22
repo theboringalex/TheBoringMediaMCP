@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="TheBoringMediaMCP" width="220">
+  <img src="assets/logo.svg" alt="TheBoringMediaMCP" width="220">
 </p>
 
 <h1 align="center">TheBoringMediaMCP</h1>
@@ -14,6 +14,11 @@
   <a href="docs/ANLEITUNG.md">🇩🇪 Anleitung</a> ·
   <a href="docs/GUIDE.md">🇬🇧 Guide</a> ·
   <a href="CHANGELOG.md">Changelog</a>
+</p>
+
+<p align="center">
+  <a href="https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Ftheboringalex%2FTheBoringMediaMCP"><img src="https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg" alt="Open your Home Assistant instance and show the add app repository dialog with this repository pre-filled."></a>
+  <a href="https://www.buymeacoffee.com/theboringalex"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee"></a>
 </p>
 
 ---
@@ -32,7 +37,7 @@
 ## Quick start
 
 ### Home Assistant add-on
-1. *Settings → Add-ons → Add-on store → ⋮ → Repositories* → add `https://github.com/theboringalex/TheBoringMediaMCP`
+1. Click the **Home Assistant button** above, or go to *Settings → Add-ons → Add-on store → ⋮ → Repositories* and add `https://github.com/theboringalex/TheBoringMediaMCP`
 2. Install **TheBoringMediaMCP**, start it, open the web UI (sidebar *Media MCP*).
 3. Enable your services, enter URL + API key, press **Test**, **Save**.
 4. Open the **Connect** tab and copy the snippet for your AI.
@@ -102,6 +107,10 @@ pip install -r theboringmediamcp/app/requirements.txt
 cd theboringmediamcp/app && python -m theboringmediamcp --port 17830
 ```
 Tools live in `theboringmediamcp/app/theboringmediamcp/tools/<service>.py`; a new tool is one decorated async function.
+
+## Support
+
+If this project saved you some time, you can [buy me a coffee](https://www.buymeacoffee.com/theboringalex) – totally optional, and always appreciated.
 
 ## License
 
