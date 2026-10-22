@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <!-- Vibrant Accent Gradient (Cyan to Violet) -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+
+    <!-- Glow Effect -->
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Container Base (App Icon Style) -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+  <rect width="508" height="508" x="2" y="2" rx="110" fill="none" stroke="#1e293b" stroke-width="4" />
+
+  <!-- Grid / Tech Pattern Detail -->
+  <g opacity="0.08" stroke="#ffffff" stroke-width="1.5">
+    <line x1="96" y1="64" x2="96" y2="448" />
+    <line x1="256" y1="64" x2="256" y2="448" />
+    <line x1="416" y1="64" x2="416" y2="448" />
+    <line x1="64" y1="96" x2="448" y2="96" />
+    <line x1="64" y1="256" x2="448" y2="256" />
+    <line x1="64" y1="416" x2="448" y2="416" />
+  </g>
+
+  <!-- Central Orchestration Ring / Network Node Paths -->
+  <g fill="none" stroke="url(#accentGrad)" stroke-width="4" opacity="0.4">
+    <circle cx="256" cy="240" r="140" stroke-dasharray="8 8" />
+    <circle cx="256" cy="240" r="170" stroke-dasharray="4 12" />
+  </g>
+
+  <!-- Peripheral MCP Nodes (Representing Stack: Sonarr, Radarr, Jellyfin, etc.) -->
+  <g fill="#0ea5e9" opacity="0.8">
+    <circle cx="256" cy="70" r="6" />
+    <circle cx="390" cy="140" r="5" />
+    <circle cx="426" cy="240" r="7" />
+    <circle cx="376" cy="360" r="6" />
+    <circle cx="256" cy="410" r="5" />
+    <circle cx="136" cy="360" r="6" />
+    <circle cx="86" cy="240" r="7" />
+    <circle cx="122" cy="140" r="5" />
+  </g>
+
+  <!-- Connecting Traces to Center -->
+  <g stroke="#38bdf8" stroke-width="2" opacity="0.25">
+    <line x1="256" y1="70" x2="256" y2="150" />
+    <line x1="426" y1="240" x2="340" y2="240" />
+    <line x1="86" y1="240" x2="170" y2="240" />
+    <line x1="376" y1="360" x2="310" y2="300" />
+    <line x1="136" y1="360" x2="200" y2="300" />
+  </g>
+
+  <!-- Main Symbol: Hexagonal Media Core with Play Dynamic -->
+  <g filter="url(#subtleGlow)">
+    <!-- Circuit Base Prism (Play Button & Hex Hybrid) -->
+    <path d="M 190 148 
+             L 345 234 
+             C 356 240, 356 248, 345 254 
+             L 190 340 
+             C 178 347, 166 341, 166 326 
+             L 166 162 
+             C 166 147, 178 141, 190 148 Z" fill="none" stroke="url(#accentGrad)" stroke-width="18" stroke-linejoin="round" />
+
+    <!-- Inner Core MCP Interlink -->
+    <circle cx="256" cy="244" r="18" fill="#38bdf8" />
+    <circle cx="206" cy="214" r="10" fill="#818cf8" />
+    <circle cx="206" cy="274" r="10" fill="#818cf8" />
+    
+    <line x1="206" y1="214" x2="256" y2="244" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+    <line x1="206" y1="274" x2="256" y2="244" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <!-- Bottom Brand Signature -->
+  <text x="256" y="445" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, &#39;Helvetica Neue&#39;, sans-serif" font-size="19" font-weight="700" letter-spacing="5" fill="#64748b">
+    THEBORINGIT <tspan fill="#38bdf8">·</tspan> MEDIA MCP
+  </text>
+</svg>
