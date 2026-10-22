@@ -1,0 +1,29 @@
+name: TheBoringMediaMCP
+version: "1.0.0"
+slug: theboringmediamcp
+description: MCP server for Jellyfin, Radarr, Sonarr, Prowlarr, Seerr, SABnzbd, Gluetun, Homarr and Jellyfin Collection – with web UI
+url: https://github.com/theboringalex/TheBoringMediaMCP
+arch:
+  - amd64
+  - aarch64
+init: false
+startup: services
+boot: auto
+ingress: true
+ingress_port: 17830
+panel_icon: mdi:movie-open-play
+panel_title: Media MCP
+ports:
+  17830/tcp: 17830
+ports_description:
+  17830/tcp: MCP endpoint (Streamable HTTP, /mcp) and web UI
+options:
+  mcp_token: ""
+  public_url: ""
+  language: de
+  log_level: info
+schema:
+  mcp_token: password?
+  public_url: str?
+  language: list(de|en)?
+  log_level: list(debug|info|warning|error)?

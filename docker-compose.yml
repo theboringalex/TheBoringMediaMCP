@@ -1,0 +1,42 @@
+# TheBoringMediaMCP – Docker Compose (alle Werte direkt hier, keine .env-Datei nötig)
+# Start:  docker compose up -d --build
+# Danach: http://<server-ip>:17830  (Weboberfläche)  ·  MCP-Endpunkt: http://<server-ip>:17830/mcp
+services:
+  theboringmediamcp:
+    container_name: theboringmediamcp
+    build:
+      context: https://github.com/theboringalex/TheBoringMediaMCP.git#main
+    restart: unless-stopped
+    ports:
+      - "17830:17830"
+    volumes:
+      - /volume2/docker/theboringmediamcp/data:/data
+      # Nur für Jellyfin Collection (jfc): Docker-Socket durchreichen ODER einen Socket-Proxy nutzen (siehe Anleitung)
+      # - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: Europe/Berlin
+      # Zugangstoken für KI-Clients – ersetzen durch ein langes Zufallspasswort (z. B. `openssl rand -base64 32`)
+      TBMM_TOKEN: "BITTE-AENDERN-langes-zufaelliges-token"
+      # Optional: öffentliche Adresse für die Beispiele in der Oberfläche
+      # TBMM_PUBLIC_URL: "https://theboringmediamcp.example.de"
+      TBMM_LANGUAGE: "de"
+      # --- Startwerte der Dienste (Änderungen in der Weboberfläche haben danach Vorrang) ---
+      # Ein Dienst ist aktiv, sobald seine URL gesetzt ist.
+      TBMM_JELLYFIN_URL: "http://192.168.1.5:8096"
+      TBMM_JELLYFIN_API_KEY: ""
+      TBMM_RADARR_URL: "http://192.168.1.5:7878"
+      TBMM_RADARR_API_KEY: ""
+      TBMM_SONARR_URL: "http://192.168.1.5:8989"
+      TBMM_SONARR_API_KEY: ""
+      TBMM_PROWLARR_URL: "http://192.168.1.5:9696"
+      TBMM_PROWLARR_API_KEY: ""
+      TBMM_SEERR_URL: "http://192.168.1.5:5055"
+      TBMM_SEERR_API_KEY: ""
+      TBMM_SABNZBD_URL: "http://192.168.1.5:8080"
+      TBMM_SABNZBD_API_KEY: ""
+      TBMM_GLUETUN_URL: "http://192.168.1.5:8000"
+      # TBMM_GLUETUN_API_KEY: ""
+      # TBMM_HOMARR_URL: "http://192.168.1.5:7575"
+      # TBMM_HOMARR_API_KEY: ""
+      # TBMM_JELLYFIN_COLLECTION_URL: "unix:///var/run/docker.sock"
+      # TBMM_JELLYFIN_COLLECTION_CONTAINER: "jellyfin-collection"

@@ -1,0 +1,15 @@
+configuration:
+  mcp_token:
+    name: MCP-Zugangstoken
+    description: Geheimnis, das KI-Clients senden müssen. Leer lassen = wird automatisch erzeugt (sichtbar in der Weboberfläche).
+  public_url:
+    name: Öffentliche Basis-URL
+    description: Adresse, unter der deine KI dieses Add-on erreicht, z. B. https://media-mcp.example.de (ohne /mcp). Optional.
+  language:
+    name: Sprache der Oberfläche
+    description: Sprache der Weboberfläche.
+  log_level:
+    name: Log-Level
+    description: Ausführlichkeit des Add-on-Logs.
+network:
+  17830/tcp: MCP-Endpunkt (Streamable HTTP, /mcp) und Weboberfläche

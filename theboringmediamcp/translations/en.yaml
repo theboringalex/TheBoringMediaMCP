@@ -1,0 +1,15 @@
+configuration:
+  mcp_token:
+    name: MCP access token
+    description: Secret that AI clients must send. Leave empty to auto-generate (shown in the web UI).
+  public_url:
+    name: Public base URL
+    description: Address under which your AI reaches this add-on, e.g. https://media-mcp.example.com (without /mcp). Optional.
+  language:
+    name: UI language
+    description: Language of the web UI.
+  log_level:
+    name: Log level
+    description: Verbosity of the add-on log.
+network:
+  17830/tcp: MCP endpoint (Streamable HTTP, /mcp) and web UI
